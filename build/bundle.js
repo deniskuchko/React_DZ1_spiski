@@ -86,28 +86,6 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./src/filters/filters.js":
-/*!********************************!*\
-  !*** ./src/filters/filters.js ***!
-  \********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-/* 
-
-export const zacherkivanie = () => {
-    const exclamations = document.querySelectorAll('.fa-exclamation');
-    for(let exclamation of exclamations){
-        exclamation.addEventListener('click', function(){
-            exclamation.parentElement.parentElement.style.setProperty("text-decoration", "line-through");;
-            event.preventDefault();
-        })
-    }
-
-}; */
-
-/***/ }),
-
 /***/ "./src/main.js":
 /*!*********************!*\
   !*** ./src/main.js ***!
@@ -118,15 +96,8 @@ export const zacherkivanie = () => {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils/utils */ "./src/utils/utils.js");
-/* harmony import */ var _filters_filters__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./filters/filters */ "./src/filters/filters.js");
-/* harmony import */ var _filters_filters__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_filters_filters__WEBPACK_IMPORTED_MODULE_1__);
-
 
 document.getElementById('add').addEventListener('click', _utils_utils__WEBPACK_IMPORTED_MODULE_0__["getMessage"]);
-document.querySelector('.all').addEventListener('.click', () => {
-  console.log(_utils_utils__WEBPACK_IMPORTED_MODULE_0__["maps"]);
-});
-/* Filters */
 
 /***/ }),
 
@@ -134,17 +105,17 @@ document.querySelector('.all').addEventListener('.click', () => {
 /*!****************************!*\
   !*** ./src/utils/utils.js ***!
   \****************************/
-/*! exports provided: maps, getMessage */
+/*! exports provided: getMessage */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "maps", function() { return maps; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getMessage", function() { return getMessage; });
-const newTask = document.getElementById('ourTasks');
+let newTask = document.getElementById('ourTasks');
 const valueOfAddTask = document.getElementById('newTask');
+let valueOfP;
 let cross = true;
-const maps = new Map();
+let mass = [];
 
 const deleteTask = () => {
   let trash = document.querySelectorAll('.fa-trash-alt');
@@ -152,6 +123,7 @@ const deleteTask = () => {
   for (let task of trash) {
     task.addEventListener('click', function () {
       task.parentElement.parentElement.remove();
+      localStorage.setItem('todoApplication', newTask.innerHTML);
       event.preventDefault();
     });
   }
@@ -171,59 +143,41 @@ const zacherkivanie = () => {
       }
 
       event.preventDefault();
+      return cross;
     });
   }
 };
-/* const SborMap = (value) => {
-    
-    const task  = document.querySelector(`.task`);
-    maps.set(`${value}`, task);
-}
- */
 
-
-class Filter {
-  constructor(value) {
-    this.value = value;
-    this.task = document.querySelector(`.task`);
-    console.log(this.value);
+function loadToDo() {
+  if (localStorage.getItem('todoApplication')) {
+    newTask.innerHTML = localStorage.getItem('todoApplication');
+    deleteTask();
+    zacherkivanie();
   }
-
-  mapSet() {
-    maps.set(`${this.value}`, this.task);
-    console.log(maps);
-  }
-
-  filterAll() {
-    console.log('All');
-  }
-
-  filterActive() {
-    console.log('Active');
-  }
-
-  filterDone() {
-    console.log('Done');
-  }
-
 }
 
+;
 const getMessage = () => {
-  newTask.innerHTML += `<div class="task">
-        <p>${valueOfAddTask.value}</p>
+  const task = document.createElement('div');
+  task.className = 'task';
+  task.innerHTML = `
         <button>
             <i class="far fa-trash-alt"></i>
         </button>
         <button>    
             <i class="fas fa-exclamation"></i>
         </button>
-        </div>`;
-  const filterAll = new Filter(valueOfAddTask.value);
-  document.querySelector('.all').addEventListener('click', filterAll.mapSet);
+        `;
+  const p = document.createElement('p');
+  p.innerText = `${valueOfAddTask.value}`;
+  newTask.appendChild(task).prepend(p);
+  localStorage.setItem('todoApplication', newTask.innerHTML);
+  mass.push(valueOfAddTask.value);
   valueOfAddTask.value = '';
   deleteTask();
   zacherkivanie();
 };
+loadToDo();
 
 /***/ })
 

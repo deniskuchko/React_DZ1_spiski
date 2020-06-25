@@ -1,12 +1,4 @@
-import {getMessage, maps} from './utils/utils';
-import {zacherkivanie} from './filters/filters';
+import {getMessage} from './utils/utils';
 
 
 document.getElementById('add').addEventListener('click', getMessage);
-
-document.querySelector('.all').addEventListener('.click', () => {
-    console.log(maps);
-    });
-
-/* Filters */
-

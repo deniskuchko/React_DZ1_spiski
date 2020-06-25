@@ -1,13 +1,16 @@
-const newTask = document.getElementById('ourTasks');
+let newTask = document.getElementById('ourTasks');
 const valueOfAddTask = document.getElementById('newTask');
+let valueOfP;
 let cross = true;
-export const maps = new Map;
+let mass = [];
 
 const deleteTask = () => {
     let trash = document.querySelectorAll('.fa-trash-alt');
     for(let task of trash){
         task.addEventListener('click', function(){
             task.parentElement.parentElement.remove();
+            localStorage.setItem('todoApplication', newTask.innerHTML);
+
             event.preventDefault();
         })
     }
@@ -25,61 +28,44 @@ const zacherkivanie = () => {
             } else{
                 cross = true;
                 exclamation.parentElement.parentElement.style.setProperty("text-decoration", "none");
-            }
+            } 
             event.preventDefault();
+            return cross
         })
     }
 
 };
 
-/* const SborMap = (value) => {
-    
-    const task  = document.querySelector(`.task`);
-    maps.set(`${value}`, task);
-}
- */
-class Filter{
-    constructor(value){
-        this.value = value;
-        this.task = document.querySelector(`.task`);
-        console.log(this.value);
-    }
-    mapSet(){
-        maps.set(`${this.value}`, this.task);
-        console.log(maps);
-    }
-    filterAll(){
-        console.log('All');
-    }
-    filterActive(){
-        console.log('Active');
+function loadToDo(){
+    if(localStorage.getItem('todoApplication')){
+        newTask.innerHTML = localStorage.getItem('todoApplication');
+        deleteTask();
+        zacherkivanie();
 
     }
-    filterDone(){
-        console.log('Done');
-
-    }
-}
-
-
-
+};
 export const getMessage = () => {
-    newTask.innerHTML += `<div class="task">
-        <p>${valueOfAddTask.value}</p>
+    const task = document.createElement('div');
+    task.className = 'task';
+    task.innerHTML = `
         <button>
             <i class="far fa-trash-alt"></i>
         </button>
         <button>    
             <i class="fas fa-exclamation"></i>
         </button>
-        </div>`;
-        const filterAll = new Filter(valueOfAddTask.value);
-        document.querySelector('.all').addEventListener('click', filterAll.mapSet);
-    valueOfAddTask.value = '';
+        `;
 
+    const p = document.createElement('p');
+    
+    p.innerText = `${valueOfAddTask.value}`;
+    newTask.appendChild(task).prepend(p);
+
+    localStorage.setItem('todoApplication', newTask.innerHTML);
+
+    mass.push(valueOfAddTask.value);
+    valueOfAddTask.value ='';
     deleteTask();
     zacherkivanie();
-    
-
 };
-
+loadToDo();
