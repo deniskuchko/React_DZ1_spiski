@@ -1,5 +1,6 @@
 let newTask = document.getElementById('ourTasks');
 const valueOfAddTask = document.getElementById('newTask');
+let taskDiv = document.querySelectorAll('.task');
 let valueOfP;
 let cross = true;
 let mass = [];
@@ -44,6 +45,8 @@ function loadToDo(){
 
     }
 };
+
+
 export const getMessage = () => {
     const task = document.createElement('div');
     task.className = 'task';
@@ -69,3 +72,31 @@ export const getMessage = () => {
     zacherkivanie();
 };
 loadToDo();
+deleteTask();
+
+/* кнопка "все" */
+const filterAll = () => {
+    newTask.innerHTML = '';
+    for(let i = 0; i < mass.length; i++){
+        
+        const task = document.createElement('div');
+        const p = document.createElement('p');
+
+        task.innerHTML = `
+        <button>
+            <i class="far fa-trash-alt"></i>
+        </button>
+        <button>    
+            <i class="fas fa-exclamation"></i>
+        </button>
+        `;
+        p.innerText = mass[i];
+        newTask.appendChild(task).prepend(p);
+    }
+    deleteTask();
+    zacherkivanie();
+}
+
+document.getElementById('all').addEventListener('click', filterAll);
+
+/* */
